@@ -1,7 +1,9 @@
-🚀 Caprae Capital: Lead Intelligence Dashboard
-React • Material-UI • Chart.js • FastAPI • Celery
+# 🚀 Lead Intelligence Frontend Dashboard
+***
 
-📚 Table of Contents
+![Library](https://img.shields.io/badge/Library-React-3776AB?style=flat-square) ![UI Framework](https://img.shields.io/badge/UI_Framework-Material_UI-007FFF?style=flat-square) ![Charts](https://img.shields.io/badge/Charts-Chart.js-FF6384?style=flat-square) ![Routing](https://img.shields.io/badge/Routing-React_Router-CA4245?style=flat-square) ![API](https://img.shields.io/badge/API-FastAPI-009688?style=flat-square) ![Task Queue](https://img.shields.io/badge/Task_Queue-Celery-37814A?style=flat-square)
+
+## 📚 Table of Contents
 - [Overview](#-overview)
 - [Problem Statement](#-problem-statement)
 - [About the Dashboard](#-about-the-dashboard)
@@ -13,10 +15,10 @@ React • Material-UI • Chart.js • FastAPI • Celery
 - [Future Work](#-future-work)
 - [Authors](#-authors)
 
-📌 Overview
-This project is an **Internship Task for Caprae Capital Partners**. It implements the frontend for a sophisticated Lead Generation Scraping Tool. Designed to integrate seamlessly with an asynchronous FastAPI and Celery backend, this dashboard allows users to manage, visualize, and extract high-value prospects.
+## 📌 Overview
+This project serves as the frontend for a sophisticated **Lead Generation Scraping Tool**. Designed to integrate seamlessly with an asynchronous FastAPI and Celery backend, this dashboard allows users to manage, visualize, and extract high-value prospects.
 
-🧠 Problem Statement
+## 🧠 Problem Statement
 Modern sales and data teams struggle with manual lead generation, which is often:
 - Time-consuming
 - Error-prone
@@ -26,21 +28,21 @@ Modern sales and data teams struggle with manual lead generation, which is often
 👉 **Our goal:**
 Build an automated, high-performance web dashboard that triggers reliable Google Maps scraping tasks, analyzes lead quality using AI, and presents the data in an actionable, user-friendly interface.
 
-📚 About the Dashboard
-This dashboard acts as the visual command center for the Caprae Capital scraping architecture. It abandons simple CSV exports in favor of a proactive, rich interface capable of real-time pipeline management.
+## 📚 About the Dashboard
+This dashboard acts as the visual command center for the scraping architecture. It abandons simple CSV exports in favor of a proactive, rich interface capable of real-time pipeline management.
 
-🔍 Key Ideas
+### 🔍 Key Ideas
 - Uses **React + Material-UI (MUI)** for a clean, modern, and responsive aesthetic.
 - Tracks headless browser scraping tasks asynchronously.
 - Visualizes complex data using interactive charts (Chart.js).
 - Fully decoupled from the backend for maximum modularity.
 
-⚡ Why it matters
+### ⚡ Why it matters
 - Allows non-technical sales members to trigger complex backend bots.
 - Instantly identifies "Hot" vs "Cold" leads without manual sorting.
 - Centralizes data previously scattered across multiple platforms.
 
-🏗️ Project Architecture
+## 🏗️ Project Architecture
 
 ```
 caprae-capital-frontend/
@@ -59,7 +61,7 @@ caprae-capital-frontend/
 └── README.md               # This file
 ```
 
-⚙️ Features & Methodology
+## ⚙️ Features & Methodology
 
 1️⃣ Google Maps Data Scraper UI
 Instead of relying on scripts, users can launch headless scraper bots directly from the interface:
@@ -81,7 +83,7 @@ Interactive charts visualizing:
 - Lead Quality Trends over time
 - Automated data enrichment rates
 
-📊 Pipeline
+## 📊 Pipeline
 User Input via Dashboard 
         → API Request to FastAPI Backend 
         → Celery Task Dispatched 
@@ -89,7 +91,7 @@ User Input via Dashboard
         → Dual-Database Insertion (MongoDB) 
         → Dashboard Fetches & Visualizes Results 
 
-🚀 How to Run
+## 🚀 How to Run
 
 🔹 1. Prerequisites
 - Node.js (v16.x or newer)
@@ -113,16 +115,16 @@ npm start
 ```
 The application will be accessible at **http://localhost:3000**.
 
-🧠 Business Value & Insights
+## 🧠 Business Value & Insights
 - **Workflow Automation:** Replaces hours of manual Google Maps scrolling with a 1-click UI.
 - **Prioritization:** The AI scoring model ensures teams call the most complete, highest-rated leads first.
 - **Scalability:** The decoupled frontend/backend architecture means the UI remains perfectly responsive even while the backend is scraping thousands of leads.
 
-📌 Future Work
+## 📌 Future Work
 - Integration of WebSocket connections for real-time live-update scraping streams.
 - Advanced predictive machine learning models for conversion probability.
 - One-click CRM integrations (Salesforce, HubSpot).
 - Automated email outreach triggering directly from the dashboard.
 
-🎓 Authors
+## 🎓 Authors
 - Krishnkant Sahu
