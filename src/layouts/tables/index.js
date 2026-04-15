@@ -9,6 +9,8 @@
 =========================================================
 */
 
+import { useState, useEffect } from "react";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -27,9 +29,21 @@ import DataTable from "examples/Tables/DataTable";
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 
+// API
+import { fetchCompanies } from "services/api";
+
 function Tables() {
-  const { columns, rows } = authorsTableData();
-  const { columns: pColumns, rows: pRows } = projectsTableData();
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const data = await fetchCompanies({ limit: 50, sortBy: "rating", order: "desc" });
+      if (data && data.results) setCompanies(data.results);
+    })();
+  }, []);
+
+  const { columns, rows } = authorsTableData(companies);
+  const { columns: pColumns, rows: pRows } = projectsTableData(companies);
 
   return (
     <DashboardLayout>
@@ -55,9 +69,10 @@ function Tables() {
               <MDBox pt={3}>
                 <DataTable
                   table={{ columns, rows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
+                  isSorted={true}
+                  entriesPerPage={{ defaultValue: 10, entries: [5, 10, 25] }}
+                  canSearch={true}
+                  showTotalEntries={true}
                   noEndBorder
                 />
               </MDBox>
@@ -82,9 +97,10 @@ function Tables() {
               <MDBox pt={3}>
                 <DataTable
                   table={{ columns: pColumns, rows: pRows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
+                  isSorted={true}
+                  entriesPerPage={{ defaultValue: 10, entries: [5, 10, 25] }}
+                  canSearch={true}
+                  showTotalEntries={true}
                   noEndBorder
                 />
               </MDBox>

@@ -1,16 +1,7 @@
 /**
 =========================================================
-* Material Dashboard 2 React - v2.2.0
+* Lead Intelligence Dashboard - Platform Settings
 =========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
 import { useState } from "react";
@@ -19,91 +10,91 @@ import { useState } from "react";
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
 
-// Material Dashboard 2 React components
+// Lead Intelligence Dashboard components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
 function PlatformSettings() {
-  const [followsMe, setFollowsMe] = useState(true);
-  const [answersPost, setAnswersPost] = useState(false);
-  const [mentionsMe, setMentionsMe] = useState(true);
-  const [newLaunches, setNewLaunches] = useState(false);
-  const [productUpdate, setProductUpdate] = useState(true);
-  const [newsletter, setNewsletter] = useState(false);
+  const [hotLeadAlerts, setHotLeadAlerts] = useState(true);
+  const [enrichmentNotifs, setEnrichmentNotifs] = useState(false);
+  const [weeklyReport, setWeeklyReport] = useState(true);
+  const [autoEnrichment, setAutoEnrichment] = useState(false);
+  const [exportNotifs, setExportNotifs] = useState(true);
+  const [apiAlerts, setApiAlerts] = useState(false);
 
   return (
     <Card sx={{ boxShadow: "none" }}>
       <MDBox p={2}>
         <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          platform settings
+          lead intelligence settings
         </MDTypography>
       </MDBox>
       <MDBox pt={1} pb={2} px={2} lineHeight={1.25}>
         <MDTypography variant="caption" fontWeight="bold" color="text" textTransform="uppercase">
-          account
+          notifications
         </MDTypography>
         <MDBox display="flex" alignItems="center" mb={0.5} ml={-1.5}>
           <MDBox mt={0.5}>
-            <Switch checked={followsMe} onChange={() => setFollowsMe(!followsMe)} />
+            <Switch checked={hotLeadAlerts} onChange={() => setHotLeadAlerts(!hotLeadAlerts)} />
           </MDBox>
           <MDBox width="80%" ml={0.5}>
             <MDTypography variant="button" fontWeight="regular" color="text">
-              Email me when someone follows me
+              Alert me when a HOT lead is detected
             </MDTypography>
           </MDBox>
         </MDBox>
         <MDBox display="flex" alignItems="center" mb={0.5} ml={-1.5}>
           <MDBox mt={0.5}>
-            <Switch checked={answersPost} onChange={() => setAnswersPost(!answersPost)} />
+            <Switch checked={enrichmentNotifs} onChange={() => setEnrichmentNotifs(!enrichmentNotifs)} />
           </MDBox>
           <MDBox width="80%" ml={0.5}>
             <MDTypography variant="button" fontWeight="regular" color="text">
-              Email me when someone answers on my post
+              Notify when email enrichment completes
             </MDTypography>
           </MDBox>
         </MDBox>
         <MDBox display="flex" alignItems="center" mb={0.5} ml={-1.5}>
           <MDBox mt={0.5}>
-            <Switch checked={mentionsMe} onChange={() => setMentionsMe(!mentionsMe)} />
+            <Switch checked={weeklyReport} onChange={() => setWeeklyReport(!weeklyReport)} />
           </MDBox>
           <MDBox width="80%" ml={0.5}>
             <MDTypography variant="button" fontWeight="regular" color="text">
-              Email me when someone mentions me
+              Send weekly analytics report
             </MDTypography>
           </MDBox>
         </MDBox>
         <MDBox mt={3}>
           <MDTypography variant="caption" fontWeight="bold" color="text" textTransform="uppercase">
-            application
+            automation
           </MDTypography>
         </MDBox>
         <MDBox display="flex" alignItems="center" mb={0.5} ml={-1.5}>
           <MDBox mt={0.5}>
-            <Switch checked={newLaunches} onChange={() => setNewLaunches(!newLaunches)} />
+            <Switch checked={autoEnrichment} onChange={() => setAutoEnrichment(!autoEnrichment)} />
           </MDBox>
           <MDBox width="80%" ml={0.5}>
             <MDTypography variant="button" fontWeight="regular" color="text">
-              New launches and projects
+              Auto-enrich new leads on scrape
             </MDTypography>
           </MDBox>
         </MDBox>
         <MDBox display="flex" alignItems="center" mb={0.5} ml={-1.5}>
           <MDBox mt={0.5}>
-            <Switch checked={productUpdate} onChange={() => setProductUpdate(!productUpdate)} />
+            <Switch checked={exportNotifs} onChange={() => setExportNotifs(!exportNotifs)} />
           </MDBox>
           <MDBox width="80%" ml={0.5}>
             <MDTypography variant="button" fontWeight="regular" color="text">
-              Monthly product updates
+              Auto-export daily CSV report
             </MDTypography>
           </MDBox>
         </MDBox>
         <MDBox display="flex" alignItems="center" mb={0.5} ml={-1.5}>
           <MDBox mt={0.5}>
-            <Switch checked={newsletter} onChange={() => setNewsletter(!newsletter)} />
+            <Switch checked={apiAlerts} onChange={() => setApiAlerts(!apiAlerts)} />
           </MDBox>
           <MDBox width="80%" ml={0.5}>
             <MDTypography variant="button" fontWeight="regular" color="text">
-              Subscribe to newsletter
+              Monitor API health and uptime
             </MDTypography>
           </MDBox>
         </MDBox>

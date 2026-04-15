@@ -9,6 +9,8 @@
 =========================================================
 */
 
+import { useState, useEffect } from "react";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -31,8 +33,34 @@ import LeadEnrichmentPanel from "layouts/leads/components/LeadEnrichmentPanel";
 // Data
 import leadsTableData from "layouts/leads/data/leadsTableData";
 
+// API
+import { fetchSummaryStats, fetchCompanies } from "services/api";
+
+// Default stats fallback
+const defaultStats = {
+  total_leads: 1247,
+  hot_leads: 342,
+  leads_with_email: 891,
+  leads_with_website: 156,
+  enrichment_rate: 71,
+  completeness_rate: 45,
+};
+
 function Leads() {
-  const { columns, rows } = leadsTableData();
+  const [stats, setStats] = useState(defaultStats);
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const summary = await fetchSummaryStats();
+      if (summary && summary.total_leads != null) setStats(summary);
+
+      const data = await fetchCompanies({ limit: 50, sortBy: "rating", order: "desc" });
+      if (data && data.results) setCompanies(data.results);
+    })();
+  }, []);
+
+  const { columns, rows } = leadsTableData(companies);
 
   return (
     <DashboardLayout>
@@ -46,7 +74,7 @@ function Leads() {
                 color="info"
                 icon="trending_up"
                 title="Total Leads"
-                count="1,247"
+                count={stats.total_leads?.toLocaleString() || "1,247"}
                 percentage={{
                   color: "success",
                   amount: "+23%",
@@ -60,8 +88,8 @@ function Leads() {
               <ComplexStatisticsCard
                 color="success"
                 icon="star"
-                title="High Quality Leads"
-                count="342"
+                title="Hot Leads"
+                count={stats.hot_leads?.toLocaleString() || "342"}
                 percentage={{
                   color: "success",
                   amount: "+18%",
@@ -76,11 +104,11 @@ function Leads() {
                 color="warning"
                 icon="auto_awesome"
                 title="AI Enriched"
-                count="891"
+                count={stats.leads_with_email?.toLocaleString() || "891"}
                 percentage={{
                   color: "info",
-                  amount: "71%",
-                  label: "of total leads",
+                  amount: `${stats.enrichment_rate || 71}%`,
+                  label: "enrichment rate",
                 }}
               />
             </MDBox>
@@ -90,12 +118,12 @@ function Leads() {
               <ComplexStatisticsCard
                 color="error"
                 icon="download"
-                title="Exported"
-                count="156"
+                title="With Website"
+                count={stats.leads_with_website?.toLocaleString() || "156"}
                 percentage={{
                   color: "success",
-                  amount: "+45%",
-                  label: "this month",
+                  amount: `${stats.completeness_rate || 45}%`,
+                  label: "completeness",
                 }}
               />
             </MDBox>

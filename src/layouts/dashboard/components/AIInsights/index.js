@@ -15,32 +15,53 @@ import Chip from "@mui/material/Chip";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-function AIInsights() {
-  const [insights, setInsights] = useState([
-    {
-      icon: "trending_up",
-      title: "Hot Lead Alert",
-      description: "TechFlow Solutions showing 87% engagement",
-      color: "success",
-      timestamp: "2 min ago",
-    },
-    {
-      icon: "auto_awesome",
-      title: "AI Enrichment Complete",
-      description: "156 leads enriched with company data",
-      color: "info",
-      timestamp: "5 min ago",
-    },
-    {
-      icon: "star",
-      title: "Premium Lead Detected",
-      description: "SecureNet Systems scored 95/100",
-      color: "warning",
-      timestamp: "8 min ago",
-    },
-  ]);
+// API
+import { fetchTopLeads } from "services/api";
 
+// default fallback insights
+const defaultInsights = [
+  {
+    icon: "trending_up",
+    title: "Hot Lead Alert",
+    description: "TechFlow Solutions showing 87% engagement",
+    color: "success",
+    timestamp: "2 min ago",
+  },
+  {
+    icon: "auto_awesome",
+    title: "AI Enrichment Complete",
+    description: "156 leads enriched with company data",
+    color: "info",
+    timestamp: "5 min ago",
+  },
+  {
+    icon: "star",
+    title: "Premium Lead Detected",
+    description: "SecureNet Systems scored 95/100",
+    color: "warning",
+    timestamp: "8 min ago",
+  },
+];
+
+function AIInsights() {
+  const [insights, setInsights] = useState(defaultInsights);
   const [currentInsight, setCurrentInsight] = useState(0);
+
+  useEffect(() => {
+    (async () => {
+      const data = await fetchTopLeads(5, "HOT");
+      if (data && data.results && data.results.length > 0) {
+        const mapped = data.results.slice(0, 5).map((lead, i) => ({
+          icon: i === 0 ? "star" : i === 1 ? "trending_up" : "auto_awesome",
+          title: lead.business_name || lead.name || "Top Lead",
+          description: `Lead Score: ${lead.lead_score?.total_score || lead.rating || "N/A"} — ${lead.category || "Business"}`,
+          color: i === 0 ? "success" : i === 1 ? "warning" : "info",
+          timestamp: lead.location || "Recently added",
+        }));
+        setInsights(mapped.length > 0 ? mapped : defaultInsights);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {

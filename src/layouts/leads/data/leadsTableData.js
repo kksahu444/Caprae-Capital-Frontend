@@ -11,7 +11,53 @@ import MDTypography from "components/MDTypography";
 import MDBadge from "components/MDBadge";
 import MDAvatar from "components/MDAvatar";
 
-export default function leadsData() {
+// Mock data fallback when backend is not available
+const mockLeads = [
+  {
+    business_name: "TechFlow Solutions", category: "SaaS", website: "techflow.io",
+    phone: "+1 (555) 123-4567", address: "San Francisco, CA", rating: 4.8,
+    lead_score: { total_score: 87, tier: "HOT" },
+  },
+  {
+    business_name: "DataVault Inc", category: "Analytics", website: "datavault.com",
+    phone: "+1 (555) 987-6543", address: "Austin, TX", rating: 4.9,
+    lead_score: { total_score: 92, tier: "HOT" },
+  },
+  {
+    business_name: "CloudSync Pro", category: "Cloud Services", website: "cloudsync.pro",
+    phone: "+1 (555) 456-7890", address: "Seattle, WA", rating: 4.2,
+    lead_score: { total_score: 68, tier: "WARM" },
+  },
+  {
+    business_name: "SecureNet Systems", category: "Cybersecurity", website: "securenet.sys",
+    phone: "+1 (555) 321-0987", address: "Boston, MA", rating: 4.9,
+    lead_score: { total_score: 95, tier: "HOT" },
+  },
+  {
+    business_name: "AutoScale Technologies", category: "DevOps", website: "autoscale.tech",
+    phone: "+1 (555) 654-3210", address: "Denver, CO", rating: 4.3,
+    lead_score: { total_score: 74, tier: "WARM" },
+  },
+  {
+    business_name: "GrowthMetrics", category: "Marketing Tech", website: "growthmetrics.com",
+    phone: "+1 (555) 789-0123", address: "Chicago, IL", rating: 4.6,
+    lead_score: { total_score: 81, tier: "HOT" },
+  },
+  {
+    business_name: "FinTech Solutions", category: "Financial Services", website: "fintechsol.com",
+    phone: "+1 (555) 246-8135", address: "New York, NY", rating: 4.7,
+    lead_score: { total_score: 89, tier: "HOT" },
+  },
+  {
+    business_name: "StartupHub", category: "Platform", website: "startuphub.co",
+    phone: "+1 (555) 135-7924", address: "Miami, FL", rating: 3.8,
+    lead_score: { total_score: 56, tier: "COLD" },
+  },
+];
+
+export default function leadsData(backendCompanies = []) {
+  const companies = backendCompanies.length > 0 ? backendCompanies : mockLeads;
+
   const Company = ({ name, domain, industry }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
       <MDAvatar bgColor="info" size="sm" borderRadius="lg" sx={{ mr: 1 }}>
@@ -34,20 +80,10 @@ export default function leadsData() {
     industry: PropTypes.string.isRequired,
   };
 
-  const LeadScore = ({ score }) => {
-    let color = "error";
-    let label = "Low";
-
-    if (score >= 75) {
-      color = "success";
-      label = "Premium";
-    } else if (score >= 50) {
-      color = "info";
-      label = "High";
-    } else if (score >= 25) {
-      color = "warning";
-      label = "Medium";
-    }
+  const LeadScore = ({ score, tier }) => {
+    const tierColors = { HOT: "success", WARM: "warning", COLD: "info", LOW: "error" };
+    const color = tierColors[tier] || (score >= 75 ? "success" : score >= 50 ? "info" : score >= 25 ? "warning" : "error");
+    const label = tier || (score >= 75 ? "Premium" : score >= 50 ? "High" : score >= 25 ? "Medium" : "Low");
 
     return (
       <MDBox display="flex" alignItems="center" gap={1}>
@@ -62,205 +98,77 @@ export default function leadsData() {
 
   LeadScore.propTypes = {
     score: PropTypes.number.isRequired,
-  };
-
-  const ContactInfo = ({ email, phone, linkedin }) => (
-    <MDBox lineHeight={1} textAlign="left">
-      <MDTypography display="block" variant="caption" color="text" fontWeight="medium">
-        {email}
-      </MDTypography>
-      <MDTypography variant="caption" color="text">
-        {phone}
-      </MDTypography>
-      <MDTypography variant="caption" color="info" component="a" href={linkedin}>
-        LinkedIn Profile
-      </MDTypography>
-    </MDBox>
-  );
-
-  ContactInfo.propTypes = {
-    email: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
-    linkedin: PropTypes.string.isRequired,
-  };
-
-  const CompanyDetails = ({ revenue, employees, location }) => (
-    <MDBox lineHeight={1} textAlign="left">
-      <MDTypography display="block" variant="caption" color="text" fontWeight="medium">
-        {revenue}
-      </MDTypography>
-      <MDTypography variant="caption" color="text">
-        {employees} employees
-      </MDTypography>
-      <MDTypography variant="caption" color="text">
-        {location}
-      </MDTypography>
-    </MDBox>
-  );
-
-  const ActionButtons = () => (
-    <MDBox display="flex" gap={1}>
-      <MDTypography 
-        component="a" 
-        href="#" 
-        variant="caption" 
-        color="info" 
-        fontWeight="medium"
-        sx={{ cursor: "pointer" }}
-      >
-        Enrich
-      </MDTypography>
-      <MDTypography 
-        component="a" 
-        href="#" 
-        variant="caption" 
-        color="success" 
-        fontWeight="medium"
-        sx={{ cursor: "pointer" }}
-      >
-        Export
-      </MDTypography>
-    </MDBox>
-  );
-
-  CompanyDetails.propTypes = {
-    revenue: PropTypes.string.isRequired,
-    employees: PropTypes.number.isRequired,
-    location: PropTypes.string.isRequired,
+    tier: PropTypes.string,
   };
 
   return {
     columns: [
       { Header: "company", accessor: "company", width: "25%", align: "left" },
-      { Header: "contact info", accessor: "contact", align: "left" },
-      { Header: "company details", accessor: "details", align: "left" },
+      { Header: "contact", accessor: "contact", align: "left" },
+      { Header: "location", accessor: "location", align: "left" },
       { Header: "lead score", accessor: "score", align: "center" },
       { Header: "status", accessor: "status", align: "center" },
-      { Header: "last updated", accessor: "updated", align: "center" },
-      { Header: "actions", accessor: "actions", align: "center" },
+      { Header: "rating", accessor: "rating", align: "center" },
     ],
 
-    rows: [
-      {
-        company: <Company name="TechFlow Solutions" domain="techflow.io" industry="SaaS" />,
-        contact: <ContactInfo email="john@techflow.io" phone="+1 (555) 123-4567" linkedin="linkedin.com/in/johndoe" />,
-        details: <CompanyDetails revenue="$2.5M ARR" employees="45" location="San Francisco, CA" />,
-        score: <LeadScore score={87} />,
-        status: (
-          <MDBadge badgeContent="hot lead" color="success" variant="gradient" size="sm" />
+    rows: companies.map((c) => {
+      const name = c.business_name || c.name || "Unknown";
+      const category = c.category || "Business";
+      const website = c.website || "";
+      const phone = c.phone || "—";
+      const address = c.address || c.location || "—";
+      const rating = c.rating || 0;
+      const totalScore = c.lead_score?.total_score || Math.round(rating * 20);
+      const tier = c.lead_score?.tier || (totalScore >= 75 ? "HOT" : totalScore >= 50 ? "WARM" : totalScore >= 25 ? "COLD" : "LOW");
+
+      return {
+        company: (
+          <Company
+            name={name}
+            domain={website.replace(/^https?:\/\//, "").split("/")[0] || "—"}
+            industry={category}
+          />
         ),
-        updated: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            2 hours ago
+        contact: (
+          <MDBox lineHeight={1}>
+            <MDTypography variant="caption" color="text" fontWeight="medium" display="block">
+              {phone}
+            </MDTypography>
+            {website && (
+              <MDTypography
+                component="a"
+                href={website.startsWith("http") ? website : `https://${website}`}
+                target="_blank"
+                variant="caption"
+                color="info"
+              >
+                {website.replace(/^https?:\/\//, "").substring(0, 25)}
+              </MDTypography>
+            )}
+          </MDBox>
+        ),
+        location: (
+          <MDTypography variant="caption" color="text">
+            {address.substring(0, 35)}
           </MDTypography>
         ),
-        actions: <ActionButtons />,
-      },
-      {
-        company: <Company name="DataVault Inc" domain="datavault.com" industry="Analytics" />,
-        contact: <ContactInfo email="sarah@datavault.com" phone="+1 (555) 987-6543" linkedin="linkedin.com/in/sarahsmith" />,
-        details: <CompanyDetails revenue="$8.2M ARR" employees="120" location="Austin, TX" />,
-        score: <LeadScore score={92} />,
+        score: <LeadScore score={totalScore} tier={tier} />,
         status: (
-          <MDBadge badgeContent="premium" color="info" variant="gradient" size="sm" />
+          <MDBadge
+            badgeContent={tier === "HOT" ? "hot lead" : tier === "WARM" ? "warm" : tier === "COLD" ? "cold" : "low"}
+            color={tier === "HOT" ? "success" : tier === "WARM" ? "warning" : tier === "COLD" ? "info" : "dark"}
+            variant="gradient"
+            size="sm"
+          />
         ),
-        updated: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            1 hour ago
-          </MDTypography>
+        rating: (
+          <MDBox display="flex" alignItems="center" gap={0.5}>
+            <MDTypography variant="caption" fontWeight="medium">
+              ⭐ {rating || "—"}
+            </MDTypography>
+          </MDBox>
         ),
-        actions: <ActionButtons />,
-      },
-      {
-        company: <Company name="CloudSync Pro" domain="cloudsync.pro" industry="Cloud Services" />,
-        contact: <ContactInfo email="mike@cloudsync.pro" phone="+1 (555) 456-7890" linkedin="linkedin.com/in/mikejohnson" />,
-        details: <CompanyDetails revenue="$1.8M ARR" employees="32" location="Seattle, WA" />,
-        score: <LeadScore score={68} />,
-        status: (
-          <MDBadge badgeContent="warm" color="warning" variant="gradient" size="sm" />
-        ),
-        updated: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            4 hours ago
-          </MDTypography>
-        ),
-        actions: <ActionButtons />,
-      },
-      {
-        company: <Company name="SecureNet Systems" domain="securenet.sys" industry="Cybersecurity" />,
-        contact: <ContactInfo email="lisa@securenet.sys" phone="+1 (555) 321-0987" linkedin="linkedin.com/in/lisadavis" />,
-        details: <CompanyDetails revenue="$12.5M ARR" employees="180" location="Boston, MA" />,
-        score: <LeadScore score={95} />,
-        status: (
-          <MDBadge badgeContent="premium" color="success" variant="gradient" size="sm" />
-        ),
-        updated: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            30 min ago
-          </MDTypography>
-        ),
-        actions: <ActionButtons />,
-      },
-      {
-        company: <Company name="AutoScale Technologies" domain="autoscale.tech" industry="DevOps" />,
-        contact: <ContactInfo email="david@autoscale.tech" phone="+1 (555) 654-3210" linkedin="linkedin.com/in/davidwilson" />,
-        details: <CompanyDetails revenue="$3.2M ARR" employees="67" location="Denver, CO" />,
-        score: <LeadScore score={74} />,
-        status: (
-          <MDBadge badgeContent="qualified" color="info" variant="gradient" size="sm" />
-        ),
-        updated: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            6 hours ago
-          </MDTypography>
-        ),
-        actions: <ActionButtons />,
-      },
-      {
-        company: <Company name="GrowthMetrics" domain="growthmetrics.com" industry="Marketing Tech" />,
-        contact: <ContactInfo email="anna@growthmetrics.com" phone="+1 (555) 789-0123" linkedin="linkedin.com/in/annabrown" />,
-        details: <CompanyDetails revenue="$5.7M ARR" employees="95" location="Chicago, IL" />,
-        score: <LeadScore score={81} />,
-        status: (
-          <MDBadge badgeContent="hot lead" color="success" variant="gradient" size="sm" />
-        ),
-        updated: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            3 hours ago
-          </MDTypography>
-        ),
-        actions: <ActionButtons />,
-      },
-      {
-        company: <Company name="FinTech Solutions" domain="fintechsol.com" industry="Financial Services" />,
-        contact: <ContactInfo email="robert@fintechsol.com" phone="+1 (555) 246-8135" linkedin="linkedin.com/in/robertlee" />,
-        details: <CompanyDetails revenue="$15.3M ARR" employees="220" location="New York, NY" />,
-        score: <LeadScore score={89} />,
-        status: (
-          <MDBadge badgeContent="premium" color="info" variant="gradient" size="sm" />
-        ),
-        updated: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            1 hour ago
-          </MDTypography>
-        ),
-        actions: <ActionButtons />,
-      },
-      {
-        company: <Company name="StartupHub" domain="startuphub.co" industry="Platform" />,
-        contact: <ContactInfo email="emily@startuphub.co" phone="+1 (555) 135-7924" linkedin="linkedin.com/in/emilytaylor" />,
-        details: <CompanyDetails revenue="$4.1M ARR" employees="78" location="Miami, FL" />,
-        score: <LeadScore score={56} />,
-        status: (
-          <MDBadge badgeContent="cold" color="dark" variant="gradient" size="sm" />
-        ),
-        updated: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            1 day ago
-          </MDTypography>
-        ),
-        actions: <ActionButtons />,
-      },
-    ],
+      };
+    }),
   };
 }

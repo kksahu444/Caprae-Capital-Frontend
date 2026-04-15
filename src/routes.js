@@ -9,23 +9,13 @@
 =========================================================
 */
 
-/** 
+/**
   Lead Intelligence Dashboard Routes Configuration
-  
-  This file contains all routes for the Lead Intelligence Dashboard.
-  Routes are automatically displayed in the sidebar navigation.
-  
-  Route Configuration:
-  - type: "collapse" for main routes, "title" for section headers, "divider" for separators
-  - name: Display name in the sidebar
-  - key: Unique identifier for the route
-  - icon: Material-UI icon component
-  - route: URL path for the route
-  - component: React component to render
 */
 
 // Lead Intelligence Dashboard layouts
 import Dashboard from "layouts/dashboard";
+import Scraper from "layouts/scraper";
 import Tables from "layouts/tables";
 import Leads from "layouts/leads";
 import Profile from "layouts/profile";
@@ -43,6 +33,14 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Lead Scraper",
+    key: "scraper",
+    icon: <Icon fontSize="small">travel_explore</Icon>,
+    route: "/scraper",
+    component: <Scraper />,
   },
   {
     type: "collapse",
@@ -68,19 +66,16 @@ const routes = [
     route: "/profile",
     component: <Profile />,
   },
+  // Auth routes (hidden from sidebar — no type: "collapse")
   {
-    type: "collapse",
     name: "Sign In",
     key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
   },
   {
-    type: "collapse",
     name: "Sign Up",
     key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
     component: <SignUp />,
   },

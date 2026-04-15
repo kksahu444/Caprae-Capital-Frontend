@@ -1,79 +1,67 @@
 /**
 =========================================================
-* Material Dashboard 2 React - v2.2.0
+* Lead Intelligence Dashboard - Recent Activity Data
 =========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
 // Images
-import kal from "assets/images/kal-visuals-square.jpg";
-import marie from "assets/images/marie.jpg";
-import ivana from "assets/images/ivana-square.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 
 export default [
   {
-    image: kal,
-    name: "Sophie B.",
-    description: "Hi! I need more information..",
+    image: team3,
+    name: "Scrape Completed",
+    description: "50 leads extracted from Google Maps — Austin, TX",
     action: {
       type: "internal",
-      route: "/pages/profile/profile-overview",
+      route: "/scraper",
       color: "info",
-      label: "reply",
-    },
-  },
-  {
-    image: marie,
-    name: "Anne Marie",
-    description: "Awesome work, can you..",
-    action: {
-      type: "internal",
-      route: "/pages/profile/profile-overview",
-      color: "info",
-      label: "reply",
-    },
-  },
-  {
-    image: ivana,
-    name: "Ivanna",
-    description: "About files I can..",
-    action: {
-      type: "internal",
-      route: "/pages/profile/profile-overview",
-      color: "info",
-      label: "reply",
+      label: "view",
     },
   },
   {
     image: team4,
-    name: "Peterson",
-    description: "Have a great afternoon..",
+    name: "Enrichment Done",
+    description: "32 emails verified via SMTP for recent batch",
     action: {
       type: "internal",
-      route: "/pages/profile/profile-overview",
-      color: "info",
-      label: "reply",
+      route: "/leads",
+      color: "success",
+      label: "view",
     },
   },
   {
     image: team3,
-    name: "Nick Daniel",
-    description: "Hi! I need more information..",
+    name: "CSV Export",
+    description: "156 leads exported to enriched_leads.csv",
     action: {
       type: "internal",
-      route: "/pages/profile/profile-overview",
+      route: "/tables",
       color: "info",
-      label: "reply",
+      label: "view",
+    },
+  },
+  {
+    image: team4,
+    name: "Hot Lead Alert",
+    description: "SecureNet Systems scored 95/100 — Premium tier",
+    action: {
+      type: "internal",
+      route: "/leads",
+      color: "success",
+      label: "view",
+    },
+  },
+  {
+    image: team3,
+    name: "New Scrape",
+    description: "Started: 'restaurants near Denver CO'",
+    action: {
+      type: "internal",
+      route: "/scraper",
+      color: "info",
+      label: "view",
     },
   },
 ];

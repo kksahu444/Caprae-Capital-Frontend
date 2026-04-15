@@ -9,6 +9,8 @@
 =========================================================
 */
 
+import { useState, useEffect } from "react";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 
@@ -32,8 +34,49 @@ import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import AIInsights from "layouts/dashboard/components/AIInsights";
 
+// API
+import { fetchSummaryStats, fetchTierDistribution } from "services/api";
+
+// Default fallback stats
+const defaultStats = {
+  total_leads: 1247,
+  hot_leads: 342,
+  leads_with_email: 891,
+  leads_with_website: 156,
+  avg_lead_score: 65.3,
+  completeness_rate: 71,
+  enrichment_rate: 45,
+};
+
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const [stats, setStats] = useState(defaultStats);
+  const [tierData, setTierData] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const summary = await fetchSummaryStats();
+      if (summary && summary.total_leads != null) {
+        setStats(summary);
+      }
+
+      const tiers = await fetchTierDistribution();
+      if (tiers && tiers.distribution) {
+        setTierData(tiers);
+      }
+    })();
+  }, []);
+
+  // build tier chart data if available
+  const barChartData = tierData
+    ? {
+        labels: Object.keys(tierData.distribution),
+        datasets: {
+          label: "Leads",
+          data: Object.values(tierData.distribution).map((t) => t.count),
+        },
+      }
+    : reportsBarChartData;
 
   return (
     <DashboardLayout>
@@ -46,7 +89,7 @@ function Dashboard() {
                 color="info"
                 icon="trending_up"
                 title="Total Leads"
-                count="1,247"
+                count={stats.total_leads?.toLocaleString() || "1,247"}
                 percentage={{
                   color: "success",
                   amount: "+23%",
@@ -60,12 +103,12 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="success"
                 icon="star"
-                title="High Quality Leads"
-                count="342"
+                title="Hot Leads"
+                count={stats.hot_leads?.toLocaleString() || "342"}
                 percentage={{
                   color: "success",
-                  amount: "+18%",
-                  label: "conversion rate",
+                  amount: `${stats.avg_lead_score || 65}`,
+                  label: "avg lead score",
                 }}
               />
             </MDBox>
@@ -76,11 +119,11 @@ function Dashboard() {
                 color="warning"
                 icon="auto_awesome"
                 title="AI Enriched"
-                count="891"
+                count={stats.leads_with_email?.toLocaleString() || "891"}
                 percentage={{
                   color: "info",
-                  amount: "71%",
-                  label: "of total leads",
+                  amount: `${stats.enrichment_rate || 71}%`,
+                  label: "enrichment rate",
                 }}
               />
             </MDBox>
@@ -90,12 +133,12 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="primary"
                 icon="download"
-                title="Exported Today"
-                count="156"
+                title="With Website"
+                count={stats.leads_with_website?.toLocaleString() || "156"}
                 percentage={{
                   color: "success",
-                  amount: "+45%",
-                  label: "this month",
+                  amount: `${stats.completeness_rate || 45}%`,
+                  label: "completeness",
                 }}
               />
             </MDBox>
@@ -107,10 +150,10 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="info"
-                  title="lead sources"
-                  description="Lead Generation Performance by Channel"
-                  date="data updated 2 hours ago"
-                  chart={reportsBarChartData}
+                  title="lead tier distribution"
+                  description="Leads by quality tier from AI scoring"
+                  date="data updated live"
+                  chart={barChartData}
                 />
               </MDBox>
             </Grid>
